@@ -55,35 +55,32 @@ class _HomePageState extends State<HomePage> {
           //Spacer(flex: 1,),
         ],
       ),
-      body: BlocProvider(
-        create: (context) => getIt<ProductBloc>(),
-        child: BlocListener<ProductBloc, ProductState>(
-          listener: (context, state) {
-            if (state is ProductError) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(state.message)));
+      body: BlocListener<ProductBloc, ProductState>(
+        listener: (context, state) {
+          if (state is ProductError) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.message)));
+          }
+        },
+        child: BlocBuilder<ProductBloc, ProductState>(
+          builder: (context, state) {
+            if (state is ProductInitial) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is ProductLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is ProductLoaded) {
+              List<ProductModel> model = state.productModel;
+              return _buildView(context, model);
+            } else if (state is ProductError) {
+              return Container();
+            } else {
+              return Container();
             }
           },
-          child: BlocBuilder<ProductBloc, ProductState>(
-            builder: (context, state) {
-              if (state is ProductInitial) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state is ProductLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state is ProductLoaded) {
-                List<ProductModel> model = state.productModel;
-                return _buildView(context, model);
-              } else if (state is ProductError) {
-                return Container();
-              } else {
-                return Container();
-              }
-            },
-          ),
         ),
       ),
     );

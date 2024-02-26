@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_product_list/dependency_injection/dependency_injection.dart';
+import 'package:flutter_product_list/presentation/blocs/product_bloc.dart';
 import 'package:flutter_product_list/presentation/pages/home_page.dart';
 import 'package:flutter_product_list/presentation/pages/settings_page.dart';
 import 'package:flutter_product_list/presentation/pages/voucher_page.dart';
@@ -17,10 +19,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    return  BlocProvider(
+      create: (BuildContext context) => getIt<ProductBloc>(),
+      child: const MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        home: MyHomePage(title: 'Flutter Demo Home Page'),
+      ),
     );
   }
 }
