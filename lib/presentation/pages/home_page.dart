@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_product_list/blocs/product_bloc.dart';
-import 'package:flutter_product_list/blocs/product_event.dart';
-import 'package:flutter_product_list/blocs/product_state.dart';
-import 'package:flutter_product_list/models/product_model.dart';
-import 'package:flutter_product_list/pages/product_page.dart';
+import 'package:flutter_product_list/presentation/blocs/product_bloc.dart';
+import 'package:flutter_product_list/presentation/blocs/product_event.dart';
+import 'package:flutter_product_list/presentation/blocs/product_state.dart';
+import 'package:flutter_product_list/dependency_injection/dependency_injection.dart';
+import 'package:flutter_product_list/domain/models/product_model.dart';
+import 'package:flutter_product_list/presentation/pages/product_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,11 +15,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final ProductBloc _newBloc = ProductBloc();
+ // final ProductBloc _newBloc = ProductBloc(getIt());
 
   @override
   void initState() {
-    _newBloc.add(GetProductList());
+    getIt<ProductBloc>().add(GetProductList());
     super.initState();
   }
 
@@ -55,7 +56,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: BlocProvider(
-        create: (context) => _newBloc,
+        create: (context) => getIt<ProductBloc>(),
         child: BlocListener<ProductBloc, ProductState>(
           listener: (context, state) {
             if (state is ProductError) {

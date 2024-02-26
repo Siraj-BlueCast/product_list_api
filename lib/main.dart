@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_product_list/pages/home_page.dart';
-import 'package:flutter_product_list/pages/settings_page.dart';
-import 'package:flutter_product_list/pages/voucher_page.dart';
-import 'package:flutter_product_list/pages/wallet_page.dart';
+import 'package:flutter_product_list/dependency_injection/dependency_injection.dart';
+import 'package:flutter_product_list/presentation/pages/home_page.dart';
+import 'package:flutter_product_list/presentation/pages/settings_page.dart';
+import 'package:flutter_product_list/presentation/pages/voucher_page.dart';
+import 'package:flutter_product_list/presentation/pages/wallet_page.dart';
 
 void main() {
+ setUpDI();
+  
   runApp(const MyApp());
 }
 
