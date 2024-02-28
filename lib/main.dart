@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_product_list/dependency_injection/dependency_injection.dart';
-import 'package:flutter_product_list/presentation/blocs/product_bloc.dart';
+import 'package:flutter_product_list/core/my_colors.dart';
+import 'package:flutter_product_list/presentation/blocs/products/product_bloc.dart';
+import 'package:flutter_product_list/presentation/blocs/themes/theme_bloc.dart';
+import 'package:flutter_product_list/presentation/blocs/themes/theme_state.dart';
 import 'package:flutter_product_list/presentation/pages/home_page.dart';
 import 'package:flutter_product_list/presentation/pages/settings_page.dart';
 import 'package:flutter_product_list/presentation/pages/voucher_page.dart';
@@ -19,13 +22,25 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return  BlocProvider(
-      create: (BuildContext context) => getIt<ProductBloc>(),
-      child: const MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        home: MyHomePage(title: 'Flutter Demo Home Page'),
-      ),
+    
+    return  MultiBlocProvider(
+      providers: [
+        BlocProvider(
+        create: (context) => getIt<ProductBloc>(),),
+        BlocProvider(create: (context) => ThemeBloc(),)
+      ],
+  
+        child:  BlocBuilder<ThemeBloc, ThemeState>(
+          builder: (context, state) {  
+          return MaterialApp(
+            title: 'Flutter Demo',
+            debugShowCheckedModeBanner: false,
+            theme: state is  DarkThemeState ? ThemeSetup.darkTheme : ThemeSetup.lightTheme,
+            home: const MyHomePage(title: 'Flutter Demo Home Page'),
+          );
+          }
+        ),
+     
     );
   }
 }
@@ -54,17 +69,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: selectedPage[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Home',backgroundColor: Colors.black),
-        BottomNavigationBarItem(icon: Icon(Icons.confirmation_num), label: 'Voucher',backgroundColor: Colors.black),
-        BottomNavigationBarItem(icon: Icon(Icons.account_balance_wallet), label:  'Wallet',backgroundColor: Colors.black),
-        BottomNavigationBarItem(icon: Icon(Icons.settings),label: 'Settings',backgroundColor: Colors.black)
+      bottomNavigationBar: BottomNavigationBar(items:  [
+        BottomNavigationBarItem(icon: const Icon(Icons.home),label: 'Home',backgroundColor: Theme.of(context).extension<MyColors>()?.navBarBG),
+        BottomNavigationBarItem(icon: const Icon(Icons.confirmation_num), label: 'Voucher',backgroundColor: Theme.of(context).extension<MyColors>()?.navBarBG),
+        BottomNavigationBarItem(icon: const Icon(Icons.account_balance_wallet), label:  'Wallet',backgroundColor: Theme.of(context).extension<MyColors>()?.navBarBG),
+        BottomNavigationBarItem(icon: const Icon(Icons.settings),label: 'Settings',backgroundColor: Theme.of(context).extension<MyColors>()?.navBarBG)
       ],
       currentIndex: _selectedIndex,
       onTap: onItemTap,
-      selectedItemColor: Colors.amberAccent,),
+      selectedItemColor: Theme.of(context).extension<MyColors>()?.navBarSelectedItem,
+      unselectedItemColor: Theme.of(context).extension<MyColors>()?.navBarUnSelectdItem,),
     );
   }
 }

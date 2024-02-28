@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_product_list/presentation/blocs/product_event.dart';
-import 'package:flutter_product_list/presentation/blocs/product_state.dart';
+import 'package:flutter_product_list/presentation/blocs/products/product_event.dart';
+import 'package:flutter_product_list/presentation/blocs/products/product_state.dart';
 import 'package:flutter_product_list/domain/models/product_model.dart';
 import 'package:flutter_product_list/data/repo/api_repo.dart';
 

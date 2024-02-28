@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_product_list/presentation/blocs/product_bloc.dart';
-import 'package:flutter_product_list/presentation/blocs/product_event.dart';
-import 'package:flutter_product_list/presentation/blocs/product_state.dart';
+import 'package:flutter_product_list/core/my_colors.dart';
+import 'package:flutter_product_list/presentation/blocs/products/product_bloc.dart';
+import 'package:flutter_product_list/presentation/blocs/products/product_event.dart';
+import 'package:flutter_product_list/presentation/blocs/products/product_state.dart';
 import 'package:flutter_product_list/dependency_injection/dependency_injection.dart';
 import 'package:flutter_product_list/domain/models/product_model.dart';
 import 'package:flutter_product_list/presentation/pages/product_page.dart';
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    MyColors colors(context) => Theme.of(context).extension<MyColors>()!;
     return Scaffold(
       appBar: AppBar(
         leading: const Padding(
@@ -64,6 +66,7 @@ class _HomePageState extends State<HomePage> {
         },
         child: BlocBuilder<ProductBloc, ProductState>(
           builder: (context, state) {
+
             if (state is ProductInitial) {
               return const Center(
                 child: CircularProgressIndicator(),
@@ -135,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text('${model[index].discountPercentage}%',style: const TextStyle(fontSize: 20,color: Colors.green
+                        Text('${model[index].discountPercentage}%',style: TextStyle(fontSize: 20,color: Theme.of(context).extension<MyColors>()?.discountPercentage
                         ),),
                         Text('\$ ${model[index].price}',style: const TextStyle(fontSize: 20,),),
                       ],
